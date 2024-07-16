@@ -32,7 +32,7 @@ export default function RootLayout({
                   type="text"
                   placeholder="Search"
                   className="bg-gray-100 border border-gray-200 rounded-3xl text-sm w-full px-4 py-2"
-                ></input>
+                />
               </div>
               <News />
             </div>
