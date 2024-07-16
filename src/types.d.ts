@@ -11,3 +11,26 @@ export interface INews {
   url: string;
   urlToImage: string;
 }
+
+export interface UploadedFile {
+  name: string;
+  size: number;
+  type: string;
+  lastModified: number;
+  lastModifiedDate: Date;
+  webkitRelativePath: string;
+}
+
+export type IPost = {
+  profileImg: string;
+  uid: string;
+  text: string;
+  image: string;
+  name: string;
+  username: string;
+  timestamp: {
+    seconds: number;
+    nanoseconds: number;
+  };
+  id: string;
+};
