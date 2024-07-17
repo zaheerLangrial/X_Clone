@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "A clone of X website built with Next.js and Tailwind CSS",
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,6 +39,7 @@ export default function RootLayout({
               <News />
             </div>
           </div>
+          {/* <CommentModel /> */}
         </body>
       </html>
     </SessionWrapper>

@@ -34,3 +34,14 @@ export type IPost = {
   };
   id: string;
 };
+
+interface IComment {
+  comment: string;
+  name: string;
+  timestamp: {
+    nanoseconds: number;
+    seconds: number;
+  };
+  userImage: string;
+  username: string;
+}

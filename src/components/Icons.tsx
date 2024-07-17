@@ -1,5 +1,6 @@
 "use client";
 
+import { modelState, postIdState } from "@/atom/modelAtom";
 import { app } from "@/firebase";
 import {
   collection,
@@ -18,6 +19,7 @@ import {
   HiOutlineHeart,
   HiOutlineTrash,
 } from "react-icons/hi";
+import { useRecoilState } from "recoil";
 
 interface IProps {
   id: string;
@@ -28,6 +30,9 @@ export default function Icons({ id, uid }: IProps) {
   const { data: session } = useSession();
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState([]);
+  const [open, setOpen] = useRecoilState(modelState);
+  const [postId, setPostId] = useRecoilState(postIdState);
+  const [comments, setComments] = useState([]);
   const db = getFirestore(app);
 
   const likePost = async () => {
@@ -44,6 +49,14 @@ export default function Icons({ id, uid }: IProps) {
       signIn();
     }
   };
+
+  useEffect(() => {
+    const data = onSnapshot(
+      collection(db, "posts", id, "comments"),
+      (snapshot) => setComments(snapshot?.docs as [])
+    );
+    return () => data();
+  }, [db, id]);
 
   useEffect(() => {
     onSnapshot(collection(db, "posts", id, "likes"), (snapshot) => {
@@ -78,7 +91,22 @@ export default function Icons({ id, uid }: IProps) {
 
   return (
     <div className="flex justify-start gap-5 p-2 text-gray-500">
-      <HiOutlineChat className="h-8 w-8 cursor-pointer rounded-full  transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100" />
+      <div className="flex items-center">
+        <HiOutlineChat
+          className="h-8 w-8 cursor-pointer rounded-full  transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100"
+          onClick={() => {
+            if (!session) {
+              signIn();
+            } else {
+              setOpen(!open);
+              setPostId(id);
+            }
+          }}
+        />
+        {comments.length > 0 && (
+          <span className="text-xs">{comments.length}</span>
+        )}
+      </div>
       <div className="flex items-center">
         {isLiked ? (
           <HiHeart
